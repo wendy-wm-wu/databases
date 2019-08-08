@@ -3,33 +3,27 @@ var db = require('../db');
 
 module.exports = {
   messages: {
-    get: function (err, res) {
-      if (err){
-        throw err;
-      } else {
-        db.query("SELECT text FROM messages", (err, result, field) => {
-          if (err){
-            throw err;
-          } else {
-            res.send(result);
-          }
-        })
-      }
+    get: function (callback) {
+      db.query("SELECT * FROM messages;", (err, result) => {
+        if (err) {
+          throw err;
+        } else {
+          callback(null, result);
+        }
+      })
+
     }, // a function which produces all the messages
-    post: function (err, res, message) {
+    post: function (message, callback) {
       console.log(message);
-      if (err){
-        throw err;
-      } else {
-        //put message into database
-        db.query(`INSERT INTO messages VALUES (${message.username}, ${message.message}, ${message.roomname})`, (err, result, field) => {
-          if (err){
-            throw err;
-          } else {
-            res.end();
-          }
-        })
-      }
+      //put message into database
+      db.query(`INSERT INTO messages (username, roomname, text) VALUES ("${message.username}",  "${message.roomname}", "${message.message}");`, (err, result, field) => {
+        if (err) {
+          throw err;
+        } else {
+          callback(null);
+        }
+      })
+
     }
     // a function which can be used to insert a message into the database
 
@@ -37,32 +31,25 @@ module.exports = {
 
   users: {
     // Ditto as above.
-    get: function (err, res) {
-      if (err){
-        throw err;
-      } else {
-        db.query("SELECT username FROM usernames", (err, result) => {
-          if (err){
-            throw err;
-          } else {
-            res.send(result);
-          }
-        })
-      }
+    get: function (callback) {
+      db.query("SELECT user_name FROM usernames;", (err, result, field) => {
+        if (err) {
+          throw err;
+        } else {
+          callback(null, result);
+        }
+      })
     },
-    post: function (err, res, message) {
-      if (err){
-        throw err;
-      } else {
-        //put message into database
-        db.query(`INSERT INTO usernames VALUES (${message.username})`, (err) => {
-          if (err){
-            throw err;
-          } else {
-            res.end();
-          }
-        })
-      }
+    post: function (message, callback) {
+      //put message into database
+      console.log(message);
+      db.query(`INSERT INTO usernames (user_name) VALUES ('${message.user_name}');`, (err, result, field) => {
+        if (err) {
+          throw err;
+        } else {
+          callback(null);
+        }
+      })
     }
   }
 }
