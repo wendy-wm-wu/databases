@@ -14,9 +14,8 @@ module.exports = {
 
     }, // a function which produces all the messages
     post: function (message, callback) {
-      console.log(message);
       //put message into database
-      db.query(`INSERT INTO messages (username, roomname, text) VALUES ("${message.username}",  "${message.roomname}", "${message.message}");`, (err, result, field) => {
+      db.query(`INSERT INTO messages (username, roomname, text) VALUES ("${message.username}",  "${message.roomname}", "${message.text}");`, (err, result, field) => {
         if (err) {
           throw err;
         } else {

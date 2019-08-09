@@ -14,6 +14,7 @@ module.exports = {
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       const message = req.body;
+      console.log(message);
       models.messages.post(message, (err) => {
         if (err) {
           throw err;
